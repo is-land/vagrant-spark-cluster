@@ -1,0 +1,7 @@
+---
+
+- include: preparation.yml
+
+- include: install.yml
+
+- include: update_conf.yml

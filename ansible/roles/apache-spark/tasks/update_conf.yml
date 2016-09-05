@@ -1,0 +1,27 @@
+---
+
+- name: update spark configuration 'slaves'
+  template:
+    src:  "templates/slaves.j2"
+    dest: "{{ spark_homedir }}/conf/slaves"
+    owner: "{{ os_user }}"
+    group: "{{ os_user }}"
+#  when: inventory_hostname in groups['masters']
+  tags: spark_conf
+
+- name: update spark configuration 'spark-defaults.conf'
+  template:
+    src:  "templates/spark-defaults.conf.j2"
+    dest: "{{ spark_homedir }}/conf/spark-defaults.conf"
+    owner: "{{ os_user }}"
+    group: "{{ os_user }}"
+#  when: inventory_hostname in groups['masters']
+  tags: spark_conf
+
+- name: update spark configuration 'log4j.properties'
+  template:
+    src:  "templates/log4j.properties.j2"
+    dest: "{{ spark_homedir }}/conf/log4j.properties"
+    owner: "{{ os_user }}"
+    group: "{{ os_user }}"
+  tags: spark_conf

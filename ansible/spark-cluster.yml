@@ -1,0 +1,15 @@
+---
+- hosts: masters, slaves
+  remote_user: root
+  roles:
+    - common
+    - williamyeh.oracle-java
+    - apache-spark
+  vars:
+    os_user: vagrant
+    os_locale: en_US.UTF-8
+    ethernet_interface: ansible_eth1
+    java_version: 8
+    java_set_javahome: true
+    spark_version: 1.6.2
+    spark_hadoop_version: 2.6

@@ -1,0 +1,32 @@
+---
+
+- name: precondition - spark_version
+  fail: msg="ERROR - required variable 'spark_version' missing."
+  when: spark_version is not defined
+
+- name: precondition - spark_hadoop_version
+  fail: msg="ERROR - required variable 'spark_hadoop_version' missing."
+  when: spark_hadoop_version is not defined
+
+- name: precondition - ethernet_interface
+  fail: msg="ERROR - required variable 'ethernet_interface' missing."
+  when: ethernet_interface is not defined
+
+- name: set spark variable
+  set_fact:
+    spark_tgzfile_name: "spark-{{ spark_version }}-bin-hadoop{{ spark_hadoop_version }}"
+  tags:
+    - spark_conf
+
+- name: set spark variable
+  set_fact:
+    spark_tgzfile: "{{ spark_tgzfile_name }}.tgz"
+  tags:
+    - spark_conf
+
+- name: set spark variable
+  set_fact:
+    spark_homedir: "/home/{{ os_user }}/{{ spark_tgzfile_name }}"
+    spark_download_url: "http://d3kbcqa49mib13.cloudfront.net/{{ spark_tgzfile }}"
+  tags:
+    - spark_conf

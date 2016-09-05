@@ -1,0 +1,18 @@
+---
+
+- include: fetch.yml
+
+- name: install Spark via tgz file
+  unarchive:
+    src: "/vagrant/.download/{{ spark_tgzfile }}"
+    dest: "/home/{{ os_user }}"
+    owner: "{{ os_user }}"
+    group: "{{ os_user }}"
+    copy: no
+
+- name: Set up SPARK_HOME
+  lineinfile:
+    dest: "/home/{{ os_user }}/.profile"
+    line: "{{ item }}"
+  with_items:
+    - export SPARK_HOME="{{ spark_homedir }}"

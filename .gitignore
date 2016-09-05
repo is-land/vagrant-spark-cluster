@@ -1,0 +1,7 @@
+# IntelliJ project files
+.idea
+*.iml
+.download
+.vagrant
+.ssh
+ansible/nodes

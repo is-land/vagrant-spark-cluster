@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+
+# A Spark Worker will be started on each of the machines listed below.
+{% for host in play_hosts %}
+{% if host in groups['slaves'] %}
+{{ host }}
+{% endif %}
+{% endfor %}

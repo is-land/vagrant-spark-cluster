@@ -1,0 +1,25 @@
+---
+#
+
+- name: debug info
+  command: "{{ item }}"
+  with_items:
+    - echo {{ spark_tgzfile }}
+    - echo {{ spark_download_url }}
+  run_once: true
+
+- name: create /vagrant/.download directory
+  file: path=/vagrant/.download state=directory mode=0755
+  run_once: true
+
+- name: check spark .tgz file already download ?
+  stat: path=/vagrant/.download/{{ spark_tgzfile }}
+  register: spark_tgzfile_check
+  run_once: true
+
+- name: Download spark .tgz file when not found
+  get_url:
+    url:     "{{ spark_download_url }}"
+    dest:    "/vagrant/.download/{{ spark_tgzfile }}"
+  when: spark_tgzfile_check is defined and spark_tgzfile_check.stat.exists == False
+  run_once: true

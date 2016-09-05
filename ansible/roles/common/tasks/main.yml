@@ -1,0 +1,51 @@
+---
+
+- name: precondition - os_user
+  fail: msg="ERROR - required variable 'os_user' missing."
+  when: os_user is not defined
+
+- name: precondition - os_locale
+  fail: msg="ERROR - required variable 'os_locale' missing."
+  when: os_locale is not defined
+
+- name: set timezone variables
+  command: timedatectl set-timezone Asia/Taipei
+
+- name: set default Locale
+  lineinfile:
+    dest: /etc/default/locale
+    line: "{{ item }}"
+  with_items:
+    - LANG="{{ os_locale }}"
+    - LC_ALL="{{ os_locale }}"
+
+- name: Set Locale
+  command: "{{ item }}"
+  with_items:
+    - locale-gen {{ os_locale }}
+    - dpkg-reconfigure locales
+
+- name: istall ntp
+  apt: name=ntp
+
+- name: service restart
+  command: "{{ item }}"
+  with_items:
+    - service ntp restart
+
+- name: "generate /etc/hosts file"
+  template:
+    src: 'templates/hosts.j2'
+    dest: '/etc/hosts'
+    owner: root
+    group: root
+    mode: 0644
+  tags: etc_hosts
+  become: true
+
+- name: set up user environment - $PATH
+  lineinfile:
+    dest: "/home/{{ os_user }}/.profile"
+    line: "{{ item }}"
+  with_items:
+    - PATH="$PATH:$JAVA_HOME/bin"
