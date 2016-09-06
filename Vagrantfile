@@ -8,8 +8,7 @@
 
 require './vagrant/support_lib'
 
-puts('=' * 60)
-$nodes = readNodesDefinition
+$nodes = read_nodes_definition
 generateInventoryFile($nodes)
 puts('=' * 60)
 

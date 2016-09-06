@@ -1,28 +1,38 @@
 require 'yaml'
 
-$nodes_definition = "./nodes.yml"
+$nodes_definition = "nodes.yml"
 $inventory_filename = nil
 
-def readNodesDefinition()
-  if ARGV.length==0 or ARGV[0]=='status'
-    if ENV['NODES']==nil
-      puts("Hint:")
-      puts("You can use environment variable 'NODES' to specify another definition file, for example:")
-      puts("  $ NODES=nodes-public.yml vagrant up")
-      puts('=' * 60)
-    end
+def print_hint
+  puts("You can use environment variable 'NODES' to specify another definition file, for example:")
+  puts('  $ NODES=nodes-public.yml vagrant up')
+end
+
+def checkArgs
+  if (ARGV.length==0) or (ARGV[0].start_with? '-')
+    puts("Read nodes file(default): #{ $nodes_definition }")
+    puts("")
+    print_hint
+    Kernel.exit(0)
   end
+end
+
+def read_nodes_definition
+  puts('[ Apache Spark standalone cluster ]')
 
   if ENV['NODES']!=nil
     $nodes_definition = ENV['NODES']
   end
+
+  checkArgs
 
   puts("Nodes definition: #{ $nodes_definition }\n")
 
   filename = File.join(File.dirname(__FILE__), "../#{ $nodes_definition }")
 
   if !File.file?(filename)
-    raise "Cannot find nodes definition file: #{ filename }\n"
+    puts "\e[31mCannot find nodes definition file: #{ filename }\e[0m"
+    Kernel.exit(0)
   end
 
   basename = File.basename(filename, '.*')
@@ -52,6 +62,6 @@ def generateInventoryFile(machine_defines)
     insertInventoryFile(inventory_file, machine_defines, 'slave')
     inventory_file.close
   else
-    puts "Ansible inventory-file already exist: #{ $inventory_filename }"
+    puts "Ansible inventory-file found: #{ $inventory_filename }"
   end
 end
