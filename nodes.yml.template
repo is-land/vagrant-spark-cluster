@@ -2,7 +2,7 @@
 - name: spark-m1
   node_type: master
   vm_box: ubuntu/trusty64
-  ram: 1024
+  ram: 2048
   network:
     identifier: private_network
     ip: 172.16.1.10
@@ -10,7 +10,7 @@
 - name: spark-s1
   node_type: slave
   vm_box: ubuntu/trusty64
-  ram: 1024
+  ram: 2048
   network:
     identifier: private_network
     ip: 172.16.1.20
@@ -18,7 +18,7 @@
 - name: spark-s2
   node_type: slave
   vm_box: ubuntu/trusty64
-  ram: 1024
+  ram: 2048
   network:
     identifier: private_network
     ip: 172.16.1.30
