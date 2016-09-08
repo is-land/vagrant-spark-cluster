@@ -40,16 +40,16 @@ Vagrant.configure("2") do |config|
 
 end
 
-master_sshkey = 'id_rsa.vagrant'
+master_sshkey = 'id_rsa.master'
 
 $GENERATE_MASTER_SSHKEY = <<SCRIPT
-  mkdir -p /vagrant/.ssh
-  ssh-keygen -t rsa -N "" -f "/vagrant/.ssh/#{master_sshkey}" -C "vagrant@`hostname`"
-
   mkdir -p /home/vagrant/.ssh
-  cp /vagrant/.ssh/#{master_sshkey} /home/vagrant/.ssh/id_rsa
-  cp /vagrant/.ssh/#{master_sshkey}.pub /home/vagrant/.ssh/id_rsa.pub
-  chown vagrant:vagrant /home/vagrant/.ssh/id_rsa*
+  ssh-keygen -t rsa -N "" -f "/home/vagrant/.ssh/id_rsa" -C "vagrant@`hostname`"
+
+  mkdir -p /vagrant/.ssh
+  cp /home/vagrant/.ssh/id_rsa /vagrant/.ssh/#{master_sshkey}
+  cp /home/vagrant/.ssh/id_rsa.pub /vagrant/.ssh/#{master_sshkey}.pub
+  chown -R vagrant:vagrant /home/vagrant/.ssh
 SCRIPT
 
 $INSTALL_ANSIBLE = <<SCRIPT
