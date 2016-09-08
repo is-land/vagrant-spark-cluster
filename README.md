@@ -143,10 +143,21 @@ spark-s2                   : ok=38   changed=22   unreachable=0    failed=0
 vagrant@spark-m1:/vagrant/ansible$
 ```
 
+ansible 安裝完成後, 退出 spark-m1
+重新 ssh 登入:
+
+```
+vagrant@spark-m1:/vagrant/ansible$ exit
+logout
+Connection to 127.0.0.1 closed.
+[vagrant-spark-cluster]$ vagrant ssh spark-m1
+vagrant@spark-m1:~$
+```
+
 啟動 spark cluster 所有節點
 
 ```
-vagrant@spark-m1:/vagrant/ansible$ cd ~/spark-1.6.2-bin-hadoop2.6/
+vagrant@spark-m1:~$ cd ~/spark-1.6.2-bin-hadoop2.6/
 vagrant@spark-m1:~/spark-1.6.2-bin-hadoop2.6$ sbin/start-all.sh
 starting org.apache.spark.deploy.master.Master, logging to /home/vagrant/spark-1.6.2-bin-hadoop2.6/logs/spark-vagrant-org.apache.spark.deploy.master.Master-1-spark-m1.out
 spark-s2: Warning: Permanently added 'spark-s2' (ECDSA) to the list of known hosts.
